@@ -6,7 +6,7 @@
 # à Polícia Federal, tornado público no dia 05 de maio de 2020.
 
 
-# Link para o texto original:
+# Link para o texto original (último acesso em 2020-05-05):
 # https://www.cnnbrasil.com.br/politica/2020/05/05/exclusivo-leia-a-integra-do-depoimento-de-sergio-moro-a-pf
 
 
@@ -45,11 +45,16 @@ DFNgram <- function(df, num_ngram = 3){
 
 
 # Arquivo usado
-file <- "inputs/data.txt"
+file <- "inputs/depoimento_original.txt"
 
 # Lê o texto
 depoimento_raw <- scan(file, what="character", sep="\n",encoding="UTF-8") # A função scan carrega os textos assim como uma leitor de CSV, mas funciona melhor para texto.
 depoimento_raw[1:5] # Verificando os cinco primeiro parágrafos do texto
+#View(depoimento_raw)
+
+# Remove trechos do texto que não são estritamente pertencentes ao depoimento em si.
+depoimento_moro <- depoimento_raw[-c(1, 32:37)]
+depoimento_moro[153] <- gsub(";.*","",depoimento_moro[153])
 
 # Escolhe apenas o texto em si, e remove as stopwords
 depoimento_moro <- removeWords(depoimento_raw, c(stopwords("pt"), "que", "Que", "QUE")) # OBS: o método removeWords só funciona com vetores de strings e é caps sensitive.
@@ -65,13 +70,17 @@ freq <- DFNgram(df_depoimento, num_ngram = 1)
 #head(freq)
 
 
-# Gráfico
+# Gráfico. Note que, se você não salvar em um tamanho grande o suficiente,
+# o termo "presidente" não aparecerá no gráfico.
 set.seed(20)
-wordcloud2(freq, color = "random-light", backgroundColor = "white") # Salve preferencialmente em 1200x1200
+wordcloud2(freq, color = "random-light", 
+           shape = "circle",
+           backgroundColor = "white") # Salve preferencialmente em 1200x1200
+
 
 
 # ***************************************
-#                N-GRAM
+#                N-GRAMS
 # ***************************************
 
 '    Um n-gram é um conjunto de n palavras que aparecem juntas. É importante ter
