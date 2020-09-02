@@ -56,6 +56,11 @@ depoimento_raw[1:5] # Verificando os cinco primeiro parágrafos do texto
 depoimento_moro <- depoimento_raw[-c(1, 32:37)]
 depoimento_moro[153] <- gsub(";.*","",depoimento_moro[153])
 
+# Salva o texto limpo em um novo ".txt":
+cat(depoimento_moro, file = "outputs/data_clean.txt")
+
+
+
 # Escolhe apenas o texto em si, e remove as stopwords
 depoimento_moro <- removeWords(depoimento_raw, c(stopwords("pt"), "que", "Que", "QUE")) # OBS: o método removeWords só funciona com vetores de strings e é caps sensitive.
 
